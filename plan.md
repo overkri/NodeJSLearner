@@ -1,6 +1,6 @@
 # ТЗ: Node.js для бэкенд-разработки
 
-Версия ТЗ: 1.0, дата фиксации: 2026-11-08. Это спецификация для кодинг-агента, не исходный код курса.
+Версия ТЗ: 1.0, дата фиксации: 2026-11-08. Это спецификация курса, а не готовый исходный код.
 
 ## 1. Допущения и обоснование выбора
 
@@ -43,10 +43,10 @@ JavaScript минимум для Java-инженера: object/array semantics, 
 `Clock.now(): Date`; `IdGenerator.next(): string`.
 Порты — `src/application/ports/`; реализации — `src/infrastructure/`. Не протаскивать pg/Drizzle/Redis/KafkaJS типы в domain.
 
-## 2. Правила для агента
+## 2. Правила реализации
 
 ### Порядок работы
-Работать строго по одному модулю. Прочитать `plan.md` и один файл `modules/NN-*.md`; реализовать только его упражнения, тесты и solutions; выполнить `npm test`, `npm run typecheck`, `npm run lint`, `npm run verify:solutions`; обновить `PROGRESS.md`; только затем перейти дальше. Не генерировать все модули одним проходом. Если тест упал — исправить реализацию, не ослаблять тест.
+Работать строго по одному модулю. Прочитать `plan.md` и один файл `modules/NN-*.md`; реализовать только его упражнения, тесты и solutions; выполнить `npm test`, `npm run typecheck`, `npm run lint`, `npm run verify:solutions`; только затем перейти дальше. Не добавлять все модули сразу. Если тест упал — исправить реализацию, не ослаблять тест.
 
 ### Шапка каждого упражнения
 ```ts
@@ -101,11 +101,11 @@ JavaScript минимум для Java-инженера: object/array semantics, 
 ## 4. Описание проекта и структура репозитория
 
 ### Готовые части
-С самого начала создать package/lock/tsconfig/lint/format config, `.env.example`, `src/domain`, `src/application`, `src/infrastructure`, `src/transport`, `test`, `solutions`, `scripts`, `migrations`, `docs`, `PROGRESS.md`, deterministic clock/ID test helpers. Не создавать compose-файл; Postgres/Redis/Kafka уже запущены пользователем.
+С самого начала создать package/lock/tsconfig/lint/format config, `.env.example`, `src/domain`, `src/application`, `src/infrastructure`, `src/transport`, `test`, `solutions`, `scripts`, `migrations`, `docs`, deterministic clock/ID test helpers. Не создавать compose-файл; Postgres/Redis/Kafka уже запущены пользователем.
 
 ### Целевая структура
 ```text
-plan.md  README.md  PROGRESS.md  package.json  package-lock.json
+plan.md  README.md  package.json  package-lock.json
 tsconfig.json eslint.config.js .prettierrc.json .nvmrc .env.example
 modules/00-runtime-language.md ... modules/11-nestjs-refactor.md
 src/{domain,application,infrastructure,transport}/
@@ -137,7 +137,7 @@ docs/{STACK.md,API.md,JAVA-SPRING-MAP.md,BRIDGE-TO-NEXT.md,ADR/}
 | JUnit/Mockito | node:test + fakes | async тесты должны await Promise |
 
 ## 5. Файлы модулей
-Каждый файл самодостаточен, ≤300 строк: цель, prerequisites, краткая теория, файлы, точные сигнатуры, упражнения, тестовые проверки, ловушка, веха, checklist, quiz, cheat sheet. Агент читает только `plan.md` и текущий модуль.
+Каждый файл самодостаточен, ≤300 строк: цель, prerequisites, краткая теория, файлы, точные сигнатуры, упражнения, тестовые проверки, ловушка, веха, checklist, quiz, cheat sheet. Для работы с модулем достаточно `plan.md` и текущего модуля.
 
 - [00 Runtime и язык](modules/00-runtime-language.md)
 - [01 Async runtime](modules/01-async-runtime.md)
@@ -154,13 +154,12 @@ docs/{STACK.md,API.md,JAVA-SPRING-MAP.md,BRIDGE-TO-NEXT.md,ADR/}
 
 ## 6. Итоговые документы
 - `README.md`: prerequisites, stack, install, npm commands, env, порядок модулей, учебные ограничения.
-- `PROGRESS.md`: checklist по модулям/упражнениям, дата, веха, блокеры; отмечать только после зелёных gates.
 - `docs/JAVA-SPRING-MAP.md`: расширенная аналогия по runtime, DI, web, DB, security, observability, Kafka, lifecycle.
 - `docs/STACK.md`: versions, rationale, commands, constraints, official links.
 - `docs/API.md`: endpoints, schemas, error envelope, idempotency semantics, event schema.
 - `docs/BRIDGE-TO-NEXT.md`: следующий трек — Keycloak/OIDC, OpenAPI, OpenTelemetry, resilience, DB tuning, Kafka schema evolution, profiling, deployment adaptation.
 
-## 7. Definition of Done и порядок работы агента
+## 7. Definition of Done и порядок работы
 
 ### DoD
 - [ ] Все 12 файлов модулей существуют и каждый ≤300 строк.
@@ -172,16 +171,16 @@ docs/{STACK.md,API.md,JAVA-SPRING-MAP.md,BRIDGE-TO-NEXT.md,ADR/}
 - [ ] Есть тесты конкурентных переводов, idempotency replay/conflict, rollback, повторной Kafka delivery.
 - [ ] Nest API сохраняет контракты и бизнес-слой raw Node.
 - [ ] Нет compose/Docker/K8s/CI, secrets, float money, high-cardinality metric labels.
-- [ ] README/PROGRESS отражают реальное состояние.
+- [ ] README и docs отражают реальное состояние.
 
 ### Порядок
-1. Создать каркас и plan; не генерировать все упражнения.
+1. Создать каркас и спецификацию; не добавлять все упражнения сразу.
 2. Создать модуль 00, tests и solutions.
 3. Прогнать `npm test`, `npm run typecheck`, `npm run lint`, `npm run verify:solutions`.
-4. Обновить PROGRESS и перейти к 01. Повторить последовательно до 11.
+4. Зафиксировать результат и перейти к 01. Повторить последовательно до 11.
 5. После 03 подтвердить raw HTTP без фреймворка; после 05 — транзакции/locks; после 09 — outbox→Kafka→consumer с повторной доставкой.
 6. Финально прогнать все gates и проверить каждую DoD строку.
-7. При ограниченном контексте продолжать с ближайшего незавершённого упражнения; состояние хранить в PROGRESS. Контракты не менять без ADR.
+7. При поэтапной работе продолжать с ближайшего незавершённого упражнения. Контракты не менять без ADR.
 
 ### Матрица покрытия
 | Тема | Где покрыть |
