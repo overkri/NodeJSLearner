@@ -142,6 +142,8 @@ cp .env.example .env
 Код и материалы курса распространяются по лицензии [MIT](LICENSE).
 Copyright (c) 2026 OverKri.
 
+Вайб — [Vibe Coding License 1.0](./VIBE.md): это манифест, а не лицензия. Код остаётся под MIT.
+
 ## Документы
 
 - [`docs/STACK.md`](docs/STACK.md) — версии, rationale, ограничения, ссылки
